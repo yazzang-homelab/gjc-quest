@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>gjc-quest — gjc 결함을 퀘스트로, 전송은 사람이</title>
+<meta name="description" content="gajae-code(gjc)를 쓰다 마주친 결함을 퀘스트로 띄워, 사람이 수락한 것만 upstream 기여로 바꾸는 GJC 스킬. 탐지는 자동, 판단과 전송은 전부 사람." />
+<link rel="canonical" href="https://yazzang-homelab.github.io/gjc-quest/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="gjc-quest" />
+<meta property="og:description" content="gjc 결함을 퀘스트로. 탐지는 자동, 판단과 전송은 전부 사람." />
+<meta property="og:url" content="https://yazzang-homelab.github.io/gjc-quest/" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top">
+      <span class="brand-mark">◆</span>
+      <span class="grad">gjc-quest</span>
+    </a>
+    <div class="nav-links">
+      <a href="#flow">절차</a>
+      <a href="#why" class="hide-sm">설계</a>
+      <a href="#install">설치</a>
+      <span class="nav-sep"></span>
+      <a href="en/">EN</a>
+      <a class="ghost" href="https://github.com/yazzang-homelab/gjc-quest">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-in">
+    <span class="pill"><span class="dot"></span> GJC 스킬 · <b>비공식 서드파티</b></span>
+    <h1>결함은 에이전트가 찾고<br /><span class="grad">기여는 사람이 낸다</span></h1>
+    <p class="lede">
+      gajae-code(gjc)를 쓰다 마주친 결함을 <b>퀘스트</b>로 띄워, 사람이 수락한 것만 upstream
+      기여로 바꾼다. 탐지는 자동, 판단과 전송은 전부 사람.
+    </p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#install">설치하기 →</a>
+      <a class="btn btn-ghost" href="https://github.com/yazzang-homelab/gjc-quest">저장소 보기</a>
+    </div>
+    <div class="stats">
+      <div>
+        <div class="stat-k">사람 게이트</div>
+        <div class="stat-v tabular">2<span class="unit">개</span></div>
+      </div>
+      <div>
+        <div class="stat-k">전이 규칙</div>
+        <div class="stat-v tabular">14<span class="unit">행</span></div>
+      </div>
+      <div>
+        <div class="stat-k">원장 필드</div>
+        <div class="stat-v tabular">5<span class="unit">개</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="band" id="flow">
+  <div class="sec">
+    <div class="sec-head">
+      <div>
+        <h2>절차</h2>
+        <p>순서는 고정이다. 사람이 손대는 칸이 <span class="grad">강조된 칸</span>이고, 그 앞으로는 원격이 0이다.</p>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="step">
+        <div class="n">01</div>
+        <h3>탐지</h3>
+        <p>크래시·세션 오동작·정적 결함 세 종류로 분류한다. 정기 배치도, 상시 폴링도 없다.</p>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <h3>유효성 확인</h3>
+        <p>이미 착륙했나 · 현행 dev에 경로가 살아 있나 · 깨끗한 HOME에서도 재현되나 · 크래시 지문이 있나.</p>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h3>등급 · 배제</h3>
+        <p>크래시·데이터 손실·라이브 장애만 HIGH. 배제 뷰에 걸리면 수락 이전에 떨어진다.</p>
+      </div>
+      <div class="step human">
+        <div class="n">04</div>
+        <h3>수락 — 사람</h3>
+        <p>열한 슬롯 보고와 Decision block을 갖춘 카드로 올린다. 수락·거절·보류는 사람이 고른다.</p>
+      </div>
+      <div class="step">
+        <div class="n">05</div>
+        <h3>세 게이트</h3>
+        <p><span class="mono">maintainer_prohibition</span> → <span class="mono">freeze</span> → contract/state. 첫 실패에서 단락.</p>
+      </div>
+      <div class="step human">
+        <div class="n">06</div>
+        <h3>전송 — 사람</h3>
+        <p>push·PR·이슈 생성은 승인 뒤에만, 그 head sha에만 유효하다. 자동 제출은 없다.</p>
+      </div>
+      <div class="step">
+        <div class="n">07</div>
+        <h3>원장 · 관측</h3>
+        <p>다섯 필드 한 행을 갱신하고 관측 노트를 append한다. 원격 상태는 복사하지 않고 파생한다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="why">
+  <div class="sec">
+    <div class="sec-head">
+      <div>
+        <h2>왜 이렇게 만들었나</h2>
+        <p>"버그 찾아서 PR 내"만 시키면 draft PR 더미와 진단 로그 개선 PR이 쌓여 메인테이너 큐를 오염시킨다.</p>
+      </div>
+      <a href="https://github.com/yazzang-homelab/gjc-quest/blob/main/SKILL.md">전문 읽기 →</a>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="badges"><span class="badge hot">사람 게이트</span><span class="badge">2개</span></div>
+        <h3>수락과 전송은 다른 문이다</h3>
+        <p>① 수락 — 이걸 퀘스트로 삼을지. ② 전송 — 실제로 원격에 낼지. ①을 통과했다고 ②가 허락된 것이 아니다. 스킬은 어느 쪽도 대신 하지 않는다.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge hot">슬롯</span><span class="badge">1개</span></div>
+        <h3>동시 진행은 하나</h3>
+        <p>두 번째 <span class="mono">accepted</span> 행을 만들 수 없다. WIP 개수·로트 수명·토큰 예산 같은 숫자 상한은 쓰지 않고 구조로 막는다.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge hot">게이트</span><span class="badge">순차 3단</span></div>
+        <h3>막히면 원격은 0</h3>
+        <p>금지 통보·동결·상태 손상 중 하나라도 걸리면 PR과 crash report 양 경로가 다 막힌다. 그동안에도 탐지·수락·로컬 기록은 정상 동작한다.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">Pre-intake</span><span class="badge">4단</span></div>
+        <h3>이미 고쳐진 것은 퀘스트가 아니다</h3>
+        <p>로컬 설치본은 upstream <span class="mono">dev</span>보다 늘 낡다. 등급 판정 전에 착륙 여부·현행 dev 경로·깨끗한 HOME 재현·크래시 지문 존재를 확인하고, 떨어지면 카드를 안 올린다.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">Minimality</span><span class="badge">결함 1개</span></div>
+        <h3>설계 권한을 빌리지 않는다</h3>
+        <p>한 PR은 결함 하나, 최소 수정. 정답이 둘 이상이면 그건 결함이 아니라 제품 결정이므로 코드가 아니라 별도 이슈로 내려간다.</p>
+        <p>독립 리뷰 두 번에 blocker가 남으면 멈춘다 — 세 번째 재설계는 설계가 남의 것이라는 증거다.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">원장</span><span class="badge">5필드</span></div>
+        <h3>이중 기장을 하지 않는다</h3>
+        <p><span class="mono">quest_id · source · state · pr · closure_cause</span>. 여섯 번째 열도, <span class="mono">candidate</span> 같은 유사 상태도 없다. 원격 현재 상태는 읽기 전용 <span class="mono">gh</span>로 파생한다.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">freeze</span><span class="badge">3술어</span></div>
+        <h3>동결은 감지하고 멈춘다</h3>
+        <p>리뷰 없는 일괄 close · <span class="mono">do not open</span> 류 문구 · 내 항목이 24시간 안에 여럿 close됨. 하나라도 관측되면 전송이 0이 되고 로컬 카드로 알린다.</p>
+        <p>해제는 경과 시간이 아니라 오너가 다시 리뷰·머지하는 이벤트로만 한다.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">Decision block</span></div>
+        <h3>선택지만 나열한 카드는 카드가 아니다</h3>
+        <p>선택지마다 "고르면 벌어지는 일 / 유리한 점 / 불리한 점"을 채우고 권장 하나와 근거를 단다. 근거가 부족하면 무엇이 부족한지를 적는다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="install">
+  <div class="sec">
+    <div class="sec-head">
+      <div>
+        <h2>설치</h2>
+        <p>파일 하나다. 스킬은 설정을 바꾸지 않는다 — 켜는 것은 사람이 한다.</p>
+      </div>
+    </div>
+<pre><span class="c"># 스킬 설치</span>
+mkdir -p ~/.gjc/agent/skills/gjc-quest
+curl -fsSL https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/main/SKILL.md \
+  -o ~/.gjc/agent/skills/gjc-quest/SKILL.md
+
+<span class="c"># config.yml — 참이어야 로드된다</span>
+<span class="k">skills.enabled</span>: true
+<span class="k">skills.enablePiUser</span>: true
+
+<span class="c"># 호출 (새 세션에서)</span>
+/skill:gjc-quest</pre>
+    <ul class="notes">
+      <li><b>설정을 켠 직후 세션에는 반영되지 않는다.</b> 새 세션에서 호출해야 한다 — <span class="mono">/skill:gjc-quest</span>가 "없는 스킬"로 보이면 원인은 이것이 먼저다.</li>
+      <li>별칭: <span class="mono">gjc quest</span> · <span class="mono">quest scan</span> · <span class="mono">gjc 퀘스트</span> · <span class="mono">결함 퀘스트</span> · <span class="mono">기여할 거 있나</span> · <span class="mono">이거 PR 낼까</span></li>
+      <li>원장과 관측 노트는 <span class="mono">~/.gjc/agent/state/gjc-quest-ledger.md</span> 한 파일에 붙는다. 새 JSONL을 만들지 않는다.</li>
+      <li><b>관측 노트는 로컬 전용이다.</b> 저장소도 노트 내용을 담지 않는다 — 배제 뷰는 각자가 자기 관측에서 채우는 빈 뷰다.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="band">
+  <div class="sec">
+    <div class="sec-head">
+      <div>
+        <h2>하지 않는 것</h2>
+        <p>예외 경로를 두지 않는다.</p>
+      </div>
+    </div>
+    <div class="nope">
+      <div><b>자동 제출</b> — push·PR·이슈 생성은 승인 뒤에만, 그 head sha에만.</div>
+      <div><b>정기 배치·상시 폴링</b> — <span class="mono">cron</span>은 세션과 함께 소멸한다. 사람이 시각을 지정한 1회 보고만 예외.</div>
+      <div><b>허가 문의</b> — 메인테이너에게 "내도 되나요"를 묻지 않는다. 증거를 담은 범위 밖 결함 이슈만 예외.</div>
+      <div><b>재구현</b> — <span class="mono">gjc crash report</span>를 감싼다. 지문·이슈 생성을 대신 만들지 않는다.</div>
+      <div><b>설정 변경 · 훅 설치</b> — 스킬이 <span class="mono">config.yml</span>을 건드리지 않는다.</div>
+      <div><b>손상 상태 고쳐 쓰기</b> — 중복·손상 섹션은 보류하고 사람에게 보고한다.</div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="sec">
+    <div class="disclaim">
+      이 스킬은 <b>비공식 서드파티</b>이며 upstream과 제휴 관계가 없다.
+      대상은 <b>Yeachan-Heo/gajae-code</b>이고 대상 브랜치는 항상 <span class="mono">dev</span>이며,
+      <span class="mono">gjc crash report</span>·<span class="mono">gjc notify</span>·PR verdict 블록처럼 gjc에만 있는 표면을 전제한다.
+      다른 저장소에 쓰려면 그 부분을 다시 써야 한다.
+      기여 수용 여부는 언제나 그 저장소 관리자의 것이며, 이 문서는 절차이지 실행 권한이 아니다.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand"><span class="brand-mark">◆</span> <span class="grad">gjc-quest</span></div>
+  MIT License · <a href="https://github.com/yazzang-homelab/gjc-quest">GitHub</a> ·
+  <a href="en/">English</a>
+</footer>
+
+</body>
+</html>

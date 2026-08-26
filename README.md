@@ -1,52 +1,59 @@
 # gjc-quest
 
-[gajae-code](https://github.com/Yeachan-Heo/gajae-code)(gjc)를 쓰다 마주친 결함을 **퀘스트**로
-띄워, 사람이 수락한 것만 upstream 기여로 바꾸는 GJC 스킬이다.
+> A GJC skill that turns defects you hit while using [gajae-code](https://github.com/Yeachan-Heo/gajae-code) (gjc) into **quests** — and lets only the ones a human accepted become upstream contributions.
 
-에이전트에게 "gjc 버그 찾아서 PR 내"라고 시키면 십중팔구 draft PR 더미와 진단 로그 개선
-PR이 쌓여 메인테이너 큐를 오염시킨다. 이 스킬은 그 반대를 강제한다 — **탐지는 자동,
-판단과 전송은 전부 사람.**
+*English · [한국어](README.ko.md)*
+
+**Site: https://yazzang-homelab.github.io/gjc-quest/**
+
+Tell an agent "find gjc bugs and open PRs" and you get a pile of draft PRs and
+diagnostic-logging cleanups that pollute the maintainer's queue. This skill enforces the
+opposite: **detection is automated, judgement and transmission are entirely human.**
 
 ```
-탐지 → 유효성 확인(현행 dev에 살아 있나) → 등급 판정 → 배제 뷰 통과
-     → 퀘스트 카드(사람이 수락/거절/보류) → 세 게이트 순차 통과
-     → 사람이 직접 전송 → 원장 기록 → 관측 노트 누적
+detect → validity check (is it alive on current dev?) → grade → exclusion view
+       → quest card (human accepts / rejects / holds) → three gates in order
+       → human transmits → ledger row → observation notes
 ```
 
-## 무엇이 다른가
+## What makes it different
 
-- **사람 게이트가 두 개**, 서로 독립이다. ① 수락(intake) — 이걸 퀘스트로 삼을지.
-  ② 전송(transmission) — 실제로 원격에 낼지. ①이 ②를 허락하지 않는다.
-- **동시 진행 슬롯은 하나.** 두 번째 `accepted` 행을 만들 수 없다. WIP 개수 상한 같은
-  숫자 예산은 쓰지 않고 구조로 막는다.
-- **전송 전 세 게이트를 순서대로** 평가하고 첫 실패에서 단락한다 —
+- **Two human gates**, independent of each other. ① *intake* — is this worth being a quest?
+  ② *transmission* — do we actually push it to the remote? Passing ① does not authorize ②.
+- **Exactly one in-flight slot.** A second `accepted` row cannot exist. No numeric WIP
+  budget — the structure blocks it instead.
+- **Three gates evaluated in order**, short-circuiting on the first failure:
   `maintainer_prohibition` → `freeze` → contract/state validity.
-- **Pre-intake validity.** 로컬 설치본은 upstream `dev`보다 늘 낡다. 등급 판정 전에
-  "이미 착륙했나 / 현행 dev에 경로가 살아 있나 / 깨끗한 HOME에서도 재현되나 /
-  (HIGH 전용) 크래시 지문이 저널에 있나"를 확인한다. 여기서 떨어지면 카드를 안 올린다.
-- **Minimality gate.** 한 PR은 결함 하나, 최소 수정. 정답이 둘 이상이면 그건 결함이
-  아니라 제품 결정이므로 코드가 아니라 별도 이슈로 내려간다. 독립 리뷰 두 번에 blocker가
-  남으면 멈춘다 — 세 번째 재설계는 설계 권한을 빌리는 것이다.
-- **Decision block.** 선택지를 나열만 하는 카드는 유효한 카드가 아니다. 선택지마다
-  "고르면 벌어지는 일 / 유리한 점 / 불리한 점"을 채우고 권장 하나와 근거를 단다.
-- **다섯 필드 원장.** `quest_id · source · state · pr · closure_cause`. 여섯 번째 열도,
-  `candidate` 같은 유사 상태도 없다. 원격 현재 상태는 마크다운에 복사하지 않고 읽기 전용
-  `gh`로 파생한다(이중 기장 금지).
-- **freeze 감지.** 리뷰 없는 일괄 close, `do not open` 류 문구, 내 항목이 24시간 안에
-  여럿 close됨 — 하나라도 관측되면 PR·이슈 전송이 0이 되고 로컬 카드로 통보한다.
-  해제는 경과 시간이 아니라 오너가 다시 리뷰·머지하는 이벤트로만 한다.
+- **Pre-intake validity.** Your local install is always older than upstream `dev`. Before
+  grading: has it already landed / is the faulty path still present on current `dev` / does it
+  reproduce with a clean HOME / (HIGH only) is the crash signature actually in the journal.
+  Fail any of these and no card is raised.
+- **Minimality gate.** One PR fixes exactly one defect with the minimal change. If more than
+  one answer is defensible, it is not a defect but a product decision — it goes out as a
+  separate issue, not as code. If blockers survive two independent reviews, stop; a third
+  redesign is borrowing the owner's design authority.
+- **Decision block.** A card that only lists options is not a valid card. Every option gets
+  "what happens if you pick it / upside / downside", plus one recommendation with its basis.
+- **Five-field ledger.** `quest_id · source · state · pr · closure_cause`. No sixth column,
+  no pseudo-states like `candidate`. Remote state is never copied into markdown; it is derived
+  from read-only `gh` (no double bookkeeping).
+- **Freeze detection.** Batch closes without review, `do not open`-style wording, or several
+  of my items closed within 24 hours — any one of them drops PR/issue transmission to zero and
+  raises a local card. It clears only when the owner reviews or merges again, never by elapsed
+  time.
 
-## 하지 않는 것
+## What it will not do
 
-- 정기 배치·상시 폴링·백그라운드 타이머를 만들지 않는다(`cron`은 세션과 함께 소멸한다).
-  사람이 시각을 지정한 1회 현황 보고만 예외다.
-- 자동 제출을 하지 않는다. push·PR 생성·이슈 생성은 사람 승인 뒤에만, 그 head sha에만.
-- 메인테이너에게 허가를 묻지 않는다. 증거를 담은 범위 밖 결함 이슈만 예외이며 그것도
-  독촉하지 않는다.
-- `gjc crash report`를 재구현하지 않는다 — 감싼다.
-- 설정 파일을 바꾸지 않는다. 훅을 설치하지 않는다.
+- No periodic batches, no continuous polling, no background timers (`cron` dies with the
+  session). The single exception is a one-shot status report at a time the human specified.
+- No auto-submission. Push, PR creation and issue creation happen only after human approval,
+  and only for that head sha.
+- No asking the maintainer for permission. The sole exception is an evidence-carrying
+  out-of-scope defect issue, and even that is never chased for an answer.
+- No reimplementation of `gjc crash report` — it wraps it.
+- No config edits. No hook installation.
 
-## 설치
+## Install
 
 ```sh
 mkdir -p ~/.gjc/agent/skills/gjc-quest
@@ -54,29 +61,32 @@ curl -fsSL https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/main/SKIL
   -o ~/.gjc/agent/skills/gjc-quest/SKILL.md
 ```
 
-`config.yml`의 `skills.enabled`와 `skills.enablePiUser`가 참이어야 로드된다. **설정을 켠
-직후 세션에는 반영되지 않는다** — 새 세션에서 호출한다. 스킬은 설정을 바꾸지 않는다.
+`skills.enabled` and `skills.enablePiUser` must be true in `config.yml` for it to load.
+**Turning them on does not affect the current session** — invoke it from a new one. The skill
+never changes your configuration.
 
-호출: `/skill:gjc-quest`. 별칭 — `gjc quest`, `quest scan`, `gjc 퀘스트`, `결함 퀘스트`,
-`퀘스트 스캔`, `기여할 거 있나`, `이거 PR 낼까`.
+Invoke with `/skill:gjc-quest`. Aliases: `gjc quest`, `quest scan`, `scan gjc defects`,
+`gjc 퀘스트`, `결함 퀘스트`.
 
-## 로컬 상태
+## Local state
 
-원장과 관측 노트는 `~/.gjc/agent/state/gjc-quest-ledger.md` 한 파일에 붙는다.
-새 JSONL을 만들지 않는다. 손상·중복 섹션을 발견하면 고쳐 쓰지 않고 보류한다.
+The ledger and the observation notes attach to a single file,
+`~/.gjc/agent/state/gjc-quest-ledger.md`. No new JSONL is created. Damaged or duplicated
+sections are held, never rewritten in place.
 
-**관측 노트는 로컬 전용이다.** 관측(직접 사건)과 추단(해석)을 물리적으로 분리해 적고,
-어느 쪽도 원격으로 내보내지 않는다. 이 저장소도 노트 내용을 담지 않는다 — 배제 뷰 네
-부류는 고정 목록이 아니라 각자가 자기 관측에서 채우는 빈 뷰다.
+**The observation notes are local-only.** Observations (direct events) and inferences
+(interpretation) are recorded in physically separate tables, and neither is ever sent to a
+remote. This repository ships none of that content either — the four exclusion classes are an
+empty view that each user fills from their own observations.
 
-## 범위
+## Scope
 
-`Yeachan-Heo/gajae-code` 전용이다. 대상 브랜치는 항상 `dev`이고, `gjc crash report`·
-`gjc notify`·PR verdict 블록처럼 gjc에만 있는 표면을 전제한다. 다른 저장소에 그대로
-쓰려면 그 부분을 다시 써야 한다.
+This targets `Yeachan-Heo/gajae-code` specifically. The base branch is always `dev`, and it
+assumes gjc-only surfaces such as `gjc crash report`, `gjc notify` and the PR verdict block.
+Using it against another repository means rewriting those parts.
 
-비공식 서드파티 스킬이며 upstream과 제휴 관계가 없다.
+Unofficial third-party skill, not affiliated with upstream.
 
 ## License
 
-MIT. `LICENSE` 참조.
+MIT. See [`LICENSE`](LICENSE).

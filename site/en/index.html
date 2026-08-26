@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>gjc-quest — the agent finds the defect, the human ships it</title>
+<meta name="description" content="A GJC skill that turns defects you hit while using gajae-code (gjc) into quests, and lets only the ones a human accepted become upstream contributions. Detection is automated, judgement and transmission are human." />
+<link rel="canonical" href="https://yazzang-homelab.github.io/gjc-quest/en/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="gjc-quest" />
+<meta property="og:description" content="The agent finds the defect, the human ships it." />
+<meta property="og:url" content="https://yazzang-homelab.github.io/gjc-quest/en/" />
+<link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top">
+      <span class="brand-mark">◆</span>
+      <span class="grad">gjc-quest</span>
+    </a>
+    <div class="nav-links">
+      <a href="#flow">Flow</a>
+      <a href="#why" class="hide-sm">Design</a>
+      <a href="#install">Install</a>
+      <span class="nav-sep"></span>
+      <a href="../">KO</a>
+      <a class="ghost" href="https://github.com/yazzang-homelab/gjc-quest">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-in">
+    <span class="pill"><span class="dot"></span> GJC skill · <b>unofficial third-party</b></span>
+    <h1>The agent finds the defect<br /><span class="grad">the human ships it</span></h1>
+    <p class="lede">
+      Turns defects you hit while using gajae-code (gjc) into <b>quests</b>, and lets only the
+      ones a human accepted become upstream contributions. Detection is automated; judgement
+      and transmission are entirely human.
+    </p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#install">Install →</a>
+      <a class="btn btn-ghost" href="https://github.com/yazzang-homelab/gjc-quest">View repository</a>
+    </div>
+    <div class="stats">
+      <div>
+        <div class="stat-k">human gates</div>
+        <div class="stat-v tabular">2</div>
+      </div>
+      <div>
+        <div class="stat-k">transition rows</div>
+        <div class="stat-v tabular">14</div>
+      </div>
+      <div>
+        <div class="stat-k">ledger fields</div>
+        <div class="stat-v tabular">5</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="band" id="flow">
+  <div class="sec">
+    <div class="sec-head">
+      <div>
+        <h2>The flow</h2>
+        <p>The order is fixed. <span class="grad">Highlighted steps</span> are the human's, and nothing reaches the remote before them.</p>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="step">
+        <div class="n">01</div>
+        <h3>Detect</h3>
+        <p>Classified as crash, session misbehavior or static defect. No periodic batch, no continuous polling.</p>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <h3>Validity</h3>
+        <p>Already landed? Still present on current dev? Reproduces with a clean HOME? Crash signature in the journal?</p>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h3>Grade &amp; exclude</h3>
+        <p>Only crashes, data loss and live outages are HIGH. The exclusion view drops candidates before intake.</p>
+      </div>
+      <div class="step human">
+        <div class="n">04</div>
+        <h3>Intake — human</h3>
+        <p>Raised as a card with an eleven-slot report and a Decision block. Accept, reject or hold is the human's call.</p>
+      </div>
+      <div class="step">
+        <div class="n">05</div>
+        <h3>Three gates</h3>
+        <p><span class="mono">maintainer_prohibition</span> → <span class="mono">freeze</span> → contract/state. Short-circuits on first failure.</p>
+      </div>
+      <div class="step human">
+        <div class="n">06</div>
+        <h3>Transmit — human</h3>
+        <p>Push, PR and issue creation only after approval, and only for that head sha. No auto-submission.</p>
+      </div>
+      <div class="step">
+        <div class="n">07</div>
+        <h3>Ledger &amp; notes</h3>
+        <p>One five-field row is updated and observations appended. Remote state is derived, never copied.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="why">
+  <div class="sec">
+    <div class="sec-head">
+      <div>
+        <h2>Why it is built this way</h2>
+        <p>Say "find bugs and open PRs" and you get a pile of draft PRs and logging cleanups polluting the maintainer's queue.</p>
+      </div>
+      <a href="https://github.com/yazzang-homelab/gjc-quest/blob/main/SKILL.md">Read the skill →</a>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="badges"><span class="badge hot">human gates</span><span class="badge">2</span></div>
+        <h3>Intake and transmission are different doors</h3>
+        <p>① intake — is this worth being a quest? ② transmission — do we actually push it? Passing ① does not authorize ②, and the skill performs neither on your behalf.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge hot">slot</span><span class="badge">1</span></div>
+        <h3>One thing in flight</h3>
+        <p>A second <span class="mono">accepted</span> row cannot exist. No WIP count, lot lifetime or token budget — the structure blocks it instead of a number.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge hot">gates</span><span class="badge">3, ordered</span></div>
+        <h3>Blocked means zero remote</h3>
+        <p>A prohibition notice, a freeze or a damaged state shuts both the PR path and the crash-report path. Detection, intake and local records keep working meanwhile.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">pre-intake</span><span class="badge">4 checks</span></div>
+        <h3>Already fixed is not a quest</h3>
+        <p>Your install is always older than upstream <span class="mono">dev</span>. Landing status, the live path on current dev, a clean-HOME repro and the crash signature are checked before grading — fail any and no card is raised.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">minimality</span><span class="badge">1 defect</span></div>
+        <h3>Do not borrow design authority</h3>
+        <p>One PR, one defect, minimal change. If more than one answer is defensible it is a product decision, so it goes out as an issue rather than code.</p>
+        <p>If blockers survive two independent reviews, stop — a third redesign proves the design is someone else's.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">ledger</span><span class="badge">5 fields</span></div>
+        <h3>No double bookkeeping</h3>
+        <p><span class="mono">quest_id · source · state · pr · closure_cause</span>. No sixth column, no pseudo-state like <span class="mono">candidate</span>. Current remote state is derived from read-only <span class="mono">gh</span>.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">freeze</span><span class="badge">3 predicates</span></div>
+        <h3>Detect the freeze and stop</h3>
+        <p>Batch closes without review · <span class="mono">do not open</span>-style wording · several of my items closed within 24 hours. Any one drops transmission to zero and raises a local card.</p>
+        <p>It clears only when the owner reviews or merges again — never by elapsed time.</p>
+      </div>
+      <div class="card">
+        <div class="badges"><span class="badge">decision block</span></div>
+        <h3>A list of options is not a card</h3>
+        <p>Every option carries what happens if you pick it, its upside and its downside, plus one recommendation and its basis. If the basis is thin, say what is missing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="install">
+  <div class="sec">
+    <div class="sec-head">
+      <div>
+        <h2>Install</h2>
+        <p>One file. The skill never changes your configuration — you turn it on.</p>
+      </div>
+    </div>
+<pre><span class="c"># install the skill</span>
+mkdir -p ~/.gjc/agent/skills/gjc-quest
+curl -fsSL https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/main/SKILL.md \
+  -o ~/.gjc/agent/skills/gjc-quest/SKILL.md
+
+<span class="c"># config.yml — both must be true to load</span>
+<span class="k">skills.enabled</span>: true
+<span class="k">skills.enablePiUser</span>: true
+
+<span class="c"># invoke (from a new session)</span>
+/skill:gjc-quest</pre>
+    <ul class="notes">
+      <li><b>Turning the settings on does not affect the current session.</b> Invoke from a new one — that is the first thing to check when <span class="mono">/skill:gjc-quest</span> looks like it does not exist.</li>
+      <li>Aliases: <span class="mono">gjc quest</span> · <span class="mono">quest scan</span> · <span class="mono">scan gjc defects</span> · <span class="mono">gjc 퀘스트</span> · <span class="mono">결함 퀘스트</span></li>
+      <li>The ledger and observation notes attach to a single file, <span class="mono">~/.gjc/agent/state/gjc-quest-ledger.md</span>. No new JSONL is created.</li>
+      <li><b>The observation notes are local-only.</b> This repository ships none of that content — the exclusion view is an empty view each user fills from their own observations.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="band">
+  <div class="sec">
+    <div class="sec-head">
+      <div>
+        <h2>What it will not do</h2>
+        <p>No exception paths.</p>
+      </div>
+    </div>
+    <div class="nope">
+      <div><b>Auto-submission</b> — push, PR and issue creation only after approval, only for that head sha.</div>
+      <div><b>Periodic batches or polling</b> — <span class="mono">cron</span> dies with the session. Only a one-shot report at a human-specified time is allowed.</div>
+      <div><b>Asking permission</b> — never "may I open this?" to the maintainer. Only evidence-carrying out-of-scope defect issues.</div>
+      <div><b>Reimplementation</b> — it wraps <span class="mono">gjc crash report</span> instead of rebuilding signatures or issue creation.</div>
+      <div><b>Config edits or hooks</b> — the skill does not touch <span class="mono">config.yml</span>.</div>
+      <div><b>Rewriting damaged state</b> — duplicated or corrupt sections are held and reported.</div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="sec">
+    <div class="disclaim">
+      This is an <b>unofficial third-party</b> skill with no affiliation to upstream.
+      It targets <b>Yeachan-Heo/gajae-code</b>, the base branch is always <span class="mono">dev</span>,
+      and it assumes gjc-only surfaces such as <span class="mono">gjc crash report</span>,
+      <span class="mono">gjc notify</span> and the PR verdict block.
+      Using it against another repository means rewriting those parts.
+      Whether a contribution is accepted is always the maintainer's call — this document is a
+      procedure, not an authorization.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand"><span class="brand-mark">◆</span> <span class="grad">gjc-quest</span></div>
+  MIT License · <a href="https://github.com/yazzang-homelab/gjc-quest">GitHub</a> ·
+  <a href="../">한국어</a>
+</footer>
+
+</body>
+</html>
