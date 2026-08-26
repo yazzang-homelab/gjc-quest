@@ -130,10 +130,11 @@ code, pre, .mono, .tabular { font-family: var(--mono); }
 h1 {
   margin: 0 auto;
   max-width: 860px;
-  font-size: clamp(2.1rem, 6vw, 3.7rem);
+  font-size: clamp(1.75rem, 6.4vw, 3.7rem);
   font-weight: 900;
-  line-height: 1.12;
+  line-height: 1.14;
   letter-spacing: -0.03em;
+  word-break: keep-all;
 }
 .lede {
   margin: 20px auto 0;
@@ -270,9 +271,23 @@ pre .k { color: var(--violet); }
 footer { padding: 34px 20px 54px; text-align: center; font-size: 13px; color: var(--muted-foreground); }
 footer .brand { justify-content: center; margin-bottom: 8px; font-size: 14px; }
 
-@media (max-width: 620px) {
+@media (max-width: 760px) {
   .nav-links .hide-sm { display: none; }
-  .hero-in { padding: 60px 20px 54px; }
-  .stats { max-width: 100%; }
+}
+
+/* The nav is a nowrap flex row, so its min-content width — not the grids — is what
+   forces horizontal overflow on phones. Drop the section anchors and keep the two
+   links that cannot be reached by scrolling. */
+@media (max-width: 620px) {
+  .nav-in { gap: 12px; padding: 0 16px; }
+  .nav-links .anchor { display: none; }
+  .nav-sep { display: none; }
+  .wrap, .sec { padding-left: 16px; padding-right: 16px; }
+  .hero-in { padding: 58px 16px 52px; }
+  .stats { max-width: 100%; gap: 10px; }
+  .stat-k { font-size: 11px; }
+  .stat-v { font-size: 1.35rem; }
   .sec-head { flex-direction: column; align-items: flex-start; }
+  .cta { gap: 10px; }
+  pre { padding: 16px; font-size: 12px; }
 }

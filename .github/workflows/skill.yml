@@ -1,0 +1,46 @@
+name: Verify and attest SKILL.md
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "SKILL.md"
+      - "SHA256SUMS"
+      - ".github/workflows/skill.yml"
+  pull_request:
+    paths:
+      - "SKILL.md"
+      - "SHA256SUMS"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checksum:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # A stale SHA256SUMS is worse than none: it teaches people to skip the check.
+      - name: SHA256SUMS matches SKILL.md
+        run: |
+          set -euo pipefail
+          sha256sum -c SHA256SUMS
+          echo "pinned: $(cut -d' ' -f1 SHA256SUMS)"
+
+  attest:
+    needs: checksum
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Attest provenance for SKILL.md
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: SKILL.md

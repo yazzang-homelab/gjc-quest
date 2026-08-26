@@ -55,11 +55,38 @@ detect → validity check (is it alive on current dev?) → grade → exclusion 
 
 ## Install
 
+**A skill file is a prompt.** Dropping one into `~/.gjc/agent/skills/` puts text on your
+agent's execution path, so treat it like any other supply-chain artifact: pin a revision,
+verify the bytes, and read the diff before you install it. `curl | main` is not good enough,
+and this repository does not ask you to do it.
+
 ```sh
-mkdir -p ~/.gjc/agent/skills/gjc-quest
-curl -fsSL https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/main/SKILL.md \
-  -o ~/.gjc/agent/skills/gjc-quest/SKILL.md
+# 1. pin a revision — a tag or a commit sha, never a moving branch
+REV=v0.1.0
+
+# 2. fetch to a staging path, not into the skills directory
+curl -fsSL "https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/$REV/SKILL.md" \
+  -o /tmp/gjc-quest.SKILL.md
+curl -fsSL "https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/$REV/SHA256SUMS" \
+  -o /tmp/gjc-quest.SHA256SUMS
+
+# 3. verify the bytes, and only then install
+(cd /tmp && sed 's| SKILL.md$| gjc-quest.SKILL.md|' gjc-quest.SHA256SUMS | sha256sum -c -)
+install -Dm644 /tmp/gjc-quest.SKILL.md ~/.gjc/agent/skills/gjc-quest/SKILL.md
 ```
+
+**Provenance.** Every push that touches `SKILL.md` publishes a Sigstore build-provenance
+attestation, so the file can be tied to this repository and workflow rather than to a checksum
+you got from the same place as the file:
+
+```sh
+gh attestation verify /tmp/gjc-quest.SKILL.md --repo yazzang-homelab/gjc-quest
+```
+
+CI also refuses any commit where `SHA256SUMS` does not match `SKILL.md`
+([`skill.yml`](.github/workflows/skill.yml)) — a stale checksum is worse than none, because it
+teaches people to skip the check. There is **no PGP signature**; the attestation and the commit
+history are the provenance on offer, and 830-odd lines of Korean prose is a readable diff.
 
 `skills.enabled` and `skills.enablePiUser` must be true in `config.yml` for it to load.
 **Turning them on does not affect the current session** — invoke it from a new one. The skill
@@ -86,6 +113,14 @@ assumes gjc-only surfaces such as `gjc crash report`, `gjc notify` and the PR ve
 Using it against another repository means rewriting those parts.
 
 Unofficial third-party skill, not affiliated with upstream.
+
+## Does anyone actually follow this?
+
+Fair question — a dense procedure document proves nothing about whether a human holds the line
+every time. [**`LEDGER.md`**](LEDGER.md) is the real ledger this skill has been writing, 25
+quests, with every locator re-derived from read-only `gh` at export time: **5 landed upstream,
+15 never produced a remote object at all.** The rejections and local holds are the part worth
+reading.
 
 ## License
 

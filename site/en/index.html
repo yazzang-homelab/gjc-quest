@@ -25,9 +25,10 @@
       <span class="grad">gjc-quest</span>
     </a>
     <div class="nav-links">
-      <a href="#flow">Flow</a>
-      <a href="#why" class="hide-sm">Design</a>
-      <a href="#install">Install</a>
+      <a href="#flow" class="anchor">Flow</a>
+      <a href="#why" class="anchor hide-sm">Design</a>
+      <a href="#install" class="anchor">Install</a>
+      <a href="#ledger" class="anchor hide-sm">Ledger</a>
       <span class="nav-sep"></span>
       <a href="../">KO</a>
       <a class="ghost" href="https://github.com/yazzang-homelab/gjc-quest">GitHub</a>
@@ -176,13 +177,24 @@
     <div class="sec-head">
       <div>
         <h2>Install</h2>
-        <p>One file. The skill never changes your configuration — you turn it on.</p>
+        <p><b>A skill file is a prompt.</b> It lands on your agent's execution path, so pin a revision and verify the bytes.</p>
       </div>
     </div>
-<pre><span class="c"># install the skill</span>
-mkdir -p ~/.gjc/agent/skills/gjc-quest
-curl -fsSL https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/main/SKILL.md \
-  -o ~/.gjc/agent/skills/gjc-quest/SKILL.md
+<pre><span class="c"># 1. pin a revision — a tag or a commit sha, never a moving branch</span>
+REV=v0.1.0
+
+<span class="c"># 2. fetch to a staging path, not into the skills directory</span>
+curl -fsSL "https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/$REV/SKILL.md" \
+  -o /tmp/gjc-quest.SKILL.md
+curl -fsSL "https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/$REV/SHA256SUMS" \
+  -o /tmp/gjc-quest.SHA256SUMS
+
+<span class="c"># 3. verify the bytes, and only then install</span>
+(cd /tmp &amp;&amp; sed 's| SKILL.md$| gjc-quest.SKILL.md|' gjc-quest.SHA256SUMS | sha256sum -c -)
+install -Dm644 /tmp/gjc-quest.SKILL.md ~/.gjc/agent/skills/gjc-quest/SKILL.md
+
+<span class="c"># 4. provenance — bind the bytes to this repo and this workflow</span>
+gh attestation verify /tmp/gjc-quest.SKILL.md --repo yazzang-homelab/gjc-quest
 
 <span class="c"># config.yml — both must be true to load</span>
 <span class="k">skills.enabled</span>: true
@@ -191,10 +203,35 @@ curl -fsSL https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/main/SKIL
 <span class="c"># invoke (from a new session)</span>
 /skill:gjc-quest</pre>
     <ul class="notes">
+      <li><b>Why both a checksum and an attestation.</b> A checksum served from the same place as the file proves little on its own; the Sigstore attestation binds the bytes to this repository and workflow. <b>There is no PGP signature</b> — this does not claim one.</li>
+      <li>CI rejects any commit where <span class="mono">SHA256SUMS</span> and <span class="mono">SKILL.md</span> disagree. A stale checksum is worse than none, because it teaches people to skip the check.</li>
       <li><b>Turning the settings on does not affect the current session.</b> Invoke from a new one — that is the first thing to check when <span class="mono">/skill:gjc-quest</span> looks like it does not exist.</li>
       <li>Aliases: <span class="mono">gjc quest</span> · <span class="mono">quest scan</span> · <span class="mono">scan gjc defects</span> · <span class="mono">gjc 퀘스트</span> · <span class="mono">결함 퀘스트</span></li>
       <li>The ledger and observation notes attach to a single file, <span class="mono">~/.gjc/agent/state/gjc-quest-ledger.md</span>. No new JSONL is created.</li>
       <li><b>The observation notes are local-only.</b> This repository ships none of that content — the exclusion view is an empty view each user fills from their own observations.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="band" id="ledger">
+  <div class="sec">
+    <div class="sec-head">
+      <div>
+        <h2>Does anyone actually follow this?</h2>
+        <p>A dense procedure proves nothing about whether the line is held every time. So the ledger is published as-is.</p>
+      </div>
+      <a href="https://github.com/yazzang-homelab/gjc-quest/blob/main/LEDGER.md">All 25 rows →</a>
+    </div>
+    <div class="stats" style="max-width:100%">
+      <div><div class="stat-k">quests recorded</div><div class="stat-v tabular">25</div></div>
+      <div><div class="stat-k">landed upstream</div><div class="stat-v tabular">5</div></div>
+      <div><div class="stat-k">never sent anywhere</div><div class="stat-v tabular">15</div></div>
+    </div>
+    <ul class="notes">
+      <li><b>15 of 25 never produced a remote object.</b> That is the number worth reading — rejected by the exclusion view, unreproducible on a clean HOME, or blocked behind a product decision. It is the evidence that the gates are not decoration.</li>
+      <li>The state of all 10 locators was re-derived from read-only <span class="mono">gh</span> at export time. That is the "no second authority in markdown" rule made visible.</li>
+      <li><b>The observation notes, Decision blocks and eleven-slot reports are not published.</b> They interpret a specific maintainer's behaviour, and publishing that would be a dossier rather than evidence.</li>
+      <li>Everything except locator state is self-reported. Nothing here proves a hold was honest — only that the ratio is not flattering-by-construction.</li>
     </ul>
   </div>
 </section>

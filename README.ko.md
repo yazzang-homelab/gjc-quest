@@ -51,11 +51,37 @@ PR이 쌓여 메인테이너 큐를 오염시킨다. 이 스킬은 그 반대를
 
 ## 설치
 
+**스킬 파일은 곧 프롬프트다.** `~/.gjc/agent/skills/`에 넣는 순간 에이전트 실행 경로에
+텍스트가 꽂히므로 다른 공급망 산출물과 똑같이 다뤄야 한다 — 리비전을 고정하고, 바이트를
+검증하고, 설치 전에 diff를 읽는다. `curl | main`은 충분하지 않고, 이 저장소는 그걸 권하지
+않는다.
+
 ```sh
-mkdir -p ~/.gjc/agent/skills/gjc-quest
-curl -fsSL https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/main/SKILL.md \
-  -o ~/.gjc/agent/skills/gjc-quest/SKILL.md
+# 1. 리비전 고정 — 태그나 커밋 sha. 움직이는 브랜치는 쓰지 않는다
+REV=v0.1.0
+
+# 2. 스킬 디렉터리가 아니라 스테이징 경로로 받는다
+curl -fsSL "https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/$REV/SKILL.md" \
+  -o /tmp/gjc-quest.SKILL.md
+curl -fsSL "https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/$REV/SHA256SUMS" \
+  -o /tmp/gjc-quest.SHA256SUMS
+
+# 3. 바이트를 검증하고, 통과한 뒤에만 설치한다
+(cd /tmp && sed 's| SKILL.md$| gjc-quest.SKILL.md|' gjc-quest.SHA256SUMS | sha256sum -c -)
+install -Dm644 /tmp/gjc-quest.SKILL.md ~/.gjc/agent/skills/gjc-quest/SKILL.md
 ```
+
+**출처 증명.** `SKILL.md`를 건드리는 모든 푸시가 Sigstore 빌드 출처 증명을 발행한다. 파일과
+같은 곳에서 받은 체크섬이 아니라, 이 저장소와 이 워크플로에 파일을 결속해 확인할 수 있다.
+
+```sh
+gh attestation verify /tmp/gjc-quest.SKILL.md --repo yazzang-homelab/gjc-quest
+```
+
+CI는 `SHA256SUMS`가 `SKILL.md`와 어긋나는 커밋을 거부한다
+([`skill.yml`](.github/workflows/skill.yml)) — 낡은 체크섬은 없는 것보다 나쁘다. 검증을
+건너뛰는 습관을 가르치기 때문이다. **PGP 서명은 없다.** 제공되는 출처 증명은 attestation과
+커밋 히스토리이고, 830줄 한국어 산문은 사람이 읽을 수 있는 diff다.
 
 `config.yml`의 `skills.enabled`와 `skills.enablePiUser`가 참이어야 로드된다. **설정을 켠
 직후 세션에는 반영되지 않는다** — 새 세션에서 호출한다. 스킬은 설정을 바꾸지 않는다.
@@ -79,6 +105,13 @@ curl -fsSL https://raw.githubusercontent.com/yazzang-homelab/gjc-quest/main/SKIL
 쓰려면 그 부분을 다시 써야 한다.
 
 비공식 서드파티 스킬이며 upstream과 제휴 관계가 없다.
+
+## 이 규율을 실제로 지키는가
+
+타당한 의문이다 — 절차가 촘촘하다는 것이 매번 지켰다는 증명은 아니고, 문서로는 증명할 수
+없다. [**`LEDGER.md`**](LEDGER.md)가 이 스킬이 실제로 써 온 원장이다. 25건 전부, 로케이터는
+export 시점에 읽기 전용 `gh`로 하나씩 재파생했다 — **착륙 5건, 원격 객체를 아예 만들지 않은
+것 15건.** 거절과 로컬 보류 쪽이 읽을 값이 있는 부분이다.
 
 ## License
 
