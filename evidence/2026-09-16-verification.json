@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "kind": "read-only-audit-verification",
+  "observed_on": "2026-09-16",
+  "source": "2026-09-16-contributions.json",
+  "source_sha256": "dcea0d997324fc17b17875dbb0606b34d4cb2cca3fdf0a4635514959997c5868",
+  "independent_inventory_check": {
+    "endpoint_template": "repos/{repo}/issues?creator=yazzang-homelab&state=all&per_page=100&page={page}",
+    "method": "GET",
+    "comparison": "Exact equality of repository/number sets against source objects; duplicate IDs rejected; all pages consumed",
+    "matched_objects": 94,
+    "repositories": {
+      "Nikolaibibo/uconsole-buddy": 1,
+      "Yeachan-Heo/gajae-code": 72,
+      "anthropics/claude-code": 1,
+      "devswha/gajae-code-app": 1,
+      "mcpads/create-kr-patch-template": 1,
+      "mcpads/create-retro-game-kr-patch": 1,
+      "yazzang-homelab/hancharacter": 1,
+      "yazzang-homelab/hanpatch": 16
+    }
+  },
+  "ledger_crosswalk": {
+    "quest_rows": 38,
+    "locator_rows": 22,
+    "direct_authored_matches": 21,
+    "direct_authored_prs": 14,
+    "direct_authored_merged_prs": 12,
+    "direct_authored_closed_unmerged_prs": 2,
+    "direct_authored_issues": 7,
+    "non_authored_locator": "pr:Yeachan-Heo/gajae-code#5154"
+  },
+  "representative_ancestry_checks": [
+    {"pr": "https://github.com/Yeachan-Heo/gajae-code/pull/3527", "commit": "a28310bd06ef203137ad7b26adf74854cd32f969", "base": "dev", "status": "ahead", "behind_by": 0},
+    {"pr": "https://github.com/Yeachan-Heo/gajae-code/pull/5197", "commit": "38513c614349127de4e039bc67c9cb6c7c963af2", "base": "dev", "status": "ahead", "behind_by": 0},
+    {"pr": "https://github.com/Yeachan-Heo/gajae-code/pull/5440", "commit": "884a0ee127c4b943ea4fd5286b27194645a440d1", "base": "dev", "status": "ahead", "behind_by": 0}
+  ],
+  "representative_test_diff_checks": [
+    {"endpoint": "repos/Yeachan-Heo/gajae-code/pulls/5440/files", "path": "packages/coding-agent/test/tools/image-gen.test.ts", "observed_assertions": "Four provider cases preserve selected image-role model in request and result rather than the conversation model"},
+    {"endpoint": "repos/Yeachan-Heo/gajae-code/pulls/5197/files", "path": "packages/coding-agent/test/model-selector-profiles.test.ts", "observed_assertions": "Repeated preset selector resolves once per catalog/auth refresh while preserving credentialSessionId"}
+  ],
+  "closed_pr_inline_review_check": {
+    "endpoint_template": "repos/Yeachan-Heo/gajae-code/pulls/{number}/comments?per_page=100&page={page}",
+    "counts": {"3514": 0, "3521": 0, "3756": 0, "3844": 0, "3910": 0, "3931": 0, "4309": 0, "4466": 0, "4956": 0, "5152": 0, "5290": 0}
+  },
+  "followup_pr_checks": [
+    {"number": 3523, "author": "Yeachan-Heo", "merged_at": "2026-07-29T19:13:17Z", "merge_commit": "20fe4de3358f1149de11b4885754df0d032c17cf", "base": "dev", "behind_by": 0},
+    {"number": 3759, "author": "yazzang-homelab", "merged_at": "2026-08-02T20:15:51Z", "merge_commit": "2c284690f2944ac94b6d6886117acf3da4f18076", "base": "dev", "behind_by": 0},
+    {"number": 4054, "author": "Yeachan-Heo", "merged_at": "2026-08-08T15:44:56Z", "merge_commit": "0bb36ee8858bcb1c528768936265aea4afaa8b9b", "base": "dev", "behind_by": 0},
+    {"number": 4249, "author": "yazzang-homelab", "merged_at": "2026-08-11T16:33:33Z", "merge_commit": "75301116ec607947ea1580cae0c60da107c0eaba", "base": "dev", "behind_by": 0},
+    {"number": 4312, "author": "Yeachan-Heo", "merged_at": "2026-08-12T09:10:11Z", "merge_commit": "723fc1a2572ac90d478ff22eb9b1659ffda9bb06", "base": "dev", "behind_by": 0},
+    {"number": 4470, "author": "yazzang-homelab", "merged_at": "2026-08-13T14:44:32Z", "merge_commit": "0a736b17ece3c277a586fb53cf9161f371f693dc", "base": "dev", "behind_by": 0},
+    {"number": 4495, "author": "Yeachan-Heo", "merged_at": "2026-08-13T19:05:54Z", "merge_commit": "7a6b0d1315a6b88493aedb53607335aabdd7b1f3", "base": "dev", "behind_by": 0},
+    {"number": 5154, "author": "Yeachan-Heo", "merged_at": "2026-09-01T07:28:24Z", "merge_commit": "3fb48ca77509326853fdadd041b141c5401ea995", "base": "dev", "behind_by": 0},
+    {"number": 5294, "author": "lee98www", "merged_at": "2026-09-05T02:53:35Z", "merge_commit": "ea5e350a607aa30c4bd2fc1135063aeb894efd18", "base": "dev", "behind_by": 0}
+  ],
+  "issue_resolution_checks": {
+    "meaning": "Explicit Fixes/Closes/Resolves relationship plus actual PR merge or closing commit, not runtime reproduction or complete requirements certification",
+    "repository": "Yeachan-Heo/gajae-code",
+    "verified_relationships": {"3722": 3734, "3762": 3768, "3928": 3932, "3929": 3932, "3975": 4017, "4259": 4271, "4478": 4495, "4481": 4509, "4764": 4776, "4855": 4874, "4867": 4872, "4908": 4917, "4977": 4981, "5001": 5004, "5002": 5005, "5039": 5041},
+    "partial_relationships": {"3723": 3724, "3761": 3763, "3871": 3872},
+    "additional_verified_commit": {
+      "issue": "https://github.com/devswha/gajae-code-app/issues/13",
+      "commit": "816b03f201143c76bd756fa3bc6502db35b40bd2",
+      "evidence": "GraphQL CLOSED_EVENT closer points to this commit and its message says Resolves #13; implementation supplies an images_input path block, not native base64 image input"
+    },
+    "unverified_resolutions": [
+      {"issue": 3936, "closure_comment": "https://github.com/Yeachan-Heo/gajae-code/issues/3936#issuecomment-5204511587"},
+      {"issue": 3940, "closure_comment": "https://github.com/Yeachan-Heo/gajae-code/issues/3940#issuecomment-5204511172"},
+      {"issue": 3942, "closure_comment": "https://github.com/Yeachan-Heo/gajae-code/issues/3942#issuecomment-5204510780"},
+      {"issue": 3945, "closure_comment": "https://github.com/Yeachan-Heo/gajae-code/issues/3945#issuecomment-5204510410"}
+    ],
+    "withdrawn_report": {
+      "issue": "https://github.com/anthropics/claude-code/issues/76241",
+      "evidence": "https://github.com/anthropics/claude-code/issues/76241#issuecomment-4931554191",
+      "reason": "Reporter withdrew the software-bug attribution and reported faulty local RAM; this audit did not rerun hardware tests"
+    },
+    "counts": {"verified_relationship": 17, "partial_relationship": 3, "unverified_resolution": 4, "reporter_withdrawn": 1}
+  },
+  "credited_code_successions": [
+    {"original_pr": 3521, "successor_pr": 3523, "evidence": "https://github.com/Yeachan-Heo/gajae-code/pull/3521#issuecomment-5122405290"},
+    {"original_pr": 4309, "successor_pr": 4312, "evidence": "https://github.com/Yeachan-Heo/gajae-code/pull/4309#issuecomment-5261326016"},
+    {"original_pr": 4956, "successor_commit": "a9ed03ba2073fda4ed8b0d9c556a104e45df3476", "evidence": "https://github.com/Yeachan-Heo/gajae-code/pull/4956#issuecomment-5417147812"},
+    {"original_pr": 5152, "successor_pr": 5154, "evidence": "https://github.com/Yeachan-Heo/gajae-code/pull/5152#issuecomment-5489968077"}
+  ],
+  "closure_correction": {
+    "pr": "https://github.com/Yeachan-Heo/gajae-code/pull/5290",
+    "previous_local_classification": "product_direction",
+    "derived_classification": "other",
+    "reason": "Competing implementation #5294 won the same feature contract; discovery evidence was credited, not code succession.",
+    "evidence": "https://github.com/Yeachan-Heo/gajae-code/pull/5290#issuecomment-5548924781"
+  },
+  "limits": [
+    "This receipt records observed API comparisons, not a signed attestation.",
+    "Ancestry does not prove the change has never been reverted.",
+    "Historical upstream tests were inspected as diffs, not rerun in this audit.",
+    "Search and API inventories exclude private, deleted, inaccessible and unindexed objects; publication of private metadata is excluded.",
+    "Authored contributions and ledger matches do not establish causal skill effectiveness."
+  ]
+}

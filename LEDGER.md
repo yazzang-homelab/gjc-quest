@@ -25,13 +25,20 @@ absent from the current source; `GQ-20260826-di-other-empty-input-reask` is pres
 This does not establish that the two IDs represent the same event. Author PRs absent from
 the local ledger are not added as quests.
 
+The [public contribution audit](CONTRIBUTIONS.md) enumerates 94 authored GitHub objects,
+not 38 quests. Its 21 direct locator matches comprise 14 authored PRs (12 actually merged,
+2 closed/unmerged) and 7 issues. #5154 is a successor authored by someone else: it remains
+a ledger locator, never an addition to the audited author's denominator. The 38-row snapshot
+is preserved, with only #5290's remote-derived cause corrected below; direct matching does
+not establish causal skill attribution.
+
 ## Rows
 
 | quest_id | source | state | pr | closure_cause |
 |---|---|---|---|---|
 | `GQ-20260909-image-role-selected-model` | `session-misbehavior` | `merged` | `pr:Yeachan-Heo/gajae-code#5440` | `pending:pr-proposal;pending:head:371c7cd153782b77dced5f158c651c9b4f609f2d` |
 | `GQ-20260907-gateway-compound-tool-id` | `session-misbehavior` | `merged` | `pr:Yeachan-Heo/gajae-code#5389` | `pending:pr-proposal;pending:head:84f4f85e0` |
-| `GQ-20260905-codex-astra-catalog` | `static-defect` | `closed` | `pr:Yeachan-Heo/gajae-code#5290` | `product_direction;pending:pr-proposal;pending:succession:5294` |
+| `GQ-20260905-codex-astra-catalog` | `static-defect` | `closed` | `pr:Yeachan-Heo/gajae-code#5290` | `other;pending:pr-proposal;pending:succession:5294` |
 | `GQ-20260904-preset-cursor-rerender-freeze` | `session-misbehavior` | `merged` | `pr:Yeachan-Heo/gajae-code#5265` | `pending:pr-proposal` |
 | `GQ-20260902-preset-auth-sync-freeze` | `session-misbehavior` | `merged` | `pr:Yeachan-Heo/gajae-code#5197` | `pending:pr-proposal` |
 | `GQ-20260826-di-nested-phase-write-silent` | `static-defect` | `merged` | `pr:Yeachan-Heo/gajae-code#4985` | `pending:pr-proposal` |
@@ -113,8 +120,12 @@ exception, not as a claim that the PR merged. The full successor commit is
 gh api repos/Yeachan-Heo/gajae-code/compare/a9ed03ba2073fda4ed8b0d9c556a104e45df3476...dev --jq .behind_by
 ```
 
-#5290 is closed **unmerged**, with `product_direction` retained. Its recorded successor
-#5294 being merged does not mean #5290 merged, and does not promote this row to `merged`.
+#5290 is closed **unmerged**. Its remote-derived cause is corrected from the earlier local
+`product_direction` classification to `other`: the [public single-winner decision](https://github.com/Yeachan-Heo/gajae-code/pull/5290#issuecomment-5548924781)
+accepted #5294's implementation of the same Astra requirement, retaining #5290 only as
+corroborating evidence. This is not rejection of the feature's product direction or code
+succession preserving this author's implementation. #5294 being merged does not mean #5290
+merged, and does not promote this row to `merged`. The local source ledger was not modified.
 All seven issue locators are closed/completed. Their recorded provenance, including the
 succession references on #4478 and #4481, is retained without adding quests for successor PRs.
 
@@ -126,8 +137,9 @@ inside the permitted rows are preserved without retrieving their private targets
 
 ### Honest limits
 
-The `state` column for locators is independently verifiable through `gh`; the rest —
-`quest_id`, `source`, `closure_cause`, and every row without a locator — is **self-reported**.
+The `state` column and remote-derived terminal causes for locators are independently
+verifiable through `gh`; `quest_id`, `source`, local provenance within `closure_cause`,
+and every row without a locator are **self-reported**.
 The #4956 succession exception additionally relies on the previously verified succession and
 the current commit comparison, not PR merge state alone. These counts prove neither process
 compliance nor the honesty of holds or selection. They describe only the current snapshot,
@@ -152,13 +164,21 @@ not cumulative activity, a success rate, or fresh reproduction results.
 - #4956 PR은 closed/unmerged다. 기존에 검증한 승계 commit
   `a9ed03ba2073fda4ed8b0d9c556a104e45df3476`과 `dev`의 위 비교에서 `behind_by=0`을
   확인해 기존 `merged` 예외를 유지했다. PR 자체가 merge됐다는 뜻은 아니다.
-  #5290은 `product_direction`을 유지한 `closed`이며, 후속 #5294의 merge가 #5290의
-  merge를 뜻하지 않는다. Landed 표는 날짜를 생략했다.
+  #5290은 `closed`를 유지하되 위 공개 single-winner 결정에 따라 원격 파생 cause만
+  `product_direction`에서 `other`로 정정했다. 동일 Astra 요구에서 다른 작성자의 #5294를
+  채택하고 #5290은 corroborating evidence로 남긴 것이므로 제품 방향 거절이 아니다.
+  후속 #5294의 merge가 #5290의 merge나 원 코드 승계를 뜻하지 않는다. 로컬 소스 원장은
+  수정하지 않았다. Landed 표는 날짜를 생략했다.
 - 과거 공개본은 25건이었다. 당시 rejected인 `GQ-20260826-di-ask-freetext-missing`은
   현행 원장에 없고 `GQ-20260826-di-other-empty-input-reask`가 있다. 두 ID가 같은
   사건이라고 추정하지 않는다. 로컬 원장에 없는 작성자 PR이나 후속 PR을 quest로 추가하지 않았다.
 - 허용된 행의 참조는 보존하되 비공개 참조 대상을 조회하지 않았다. 관측 노트·Decision block·
   11슬롯 보고는 이번 갱신에서 읽지 않았고 공개하지 않는다.
-- locator의 원격 상태 외 필드와 locator 없는 행은 **자기 보고**다. #4956은 PR 상태만이
+- [공개 작성 기여 전수조사](CONTRIBUTIONS.md)는 GitHub 객체 94건이며 이 원장의 quest
+  38건과 분모가 다르다. 직접 locator 일치는 21건(PR 14, issue 7)이다. 타인 작성 후속
+  #5154는 원장 locator일 뿐 작성자 분모에 추가하지 않는다. 38행의 구성과 상태는 유지하고
+  #5290의 원격 파생 cause만 위 근거로 정정했다.
+- locator의 원격 상태·원격 파생 종료 원인 이외 필드와 로컬 provenance, locator 없는 행은
+  **자기 보고**다. #4956은 PR 상태만이
   아니라 기존 승계 검증과 현재 commit 비교에 근거한다. 이 집계는 절차 준수·보류의 정직성·
   표본 선택의 공정성을 증명하지 않으며 누적 활동·성공률·새 재현 결과도 아니다.

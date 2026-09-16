@@ -86,7 +86,7 @@ gh attestation verify /tmp/gjc-quest.SKILL.md --repo yazzang-homelab/gjc-quest
 CI also refuses any commit where `SHA256SUMS` does not match `SKILL.md`
 ([`skill.yml`](.github/workflows/skill.yml)) — a stale checksum is worse than none, because it
 teaches people to skip the check. There is **no PGP signature**; the attestation and the commit
-history are the provenance on offer, and 830-odd lines of Korean prose is a readable diff.
+history are the provenance on offer, and the skill text is a readable diff.
 
 `skills.enabled` and `skills.enablePiUser` must be true in `config.yml` for it to load.
 **Turning them on does not affect the current session** — invoke it from a new one. The skill
@@ -128,6 +128,16 @@ Locator-free holds were not reproduction-tested again. The older export had 25 r
 rejected `di-ask-freetext-missing` is absent and `di-other-empty-input-reask` is present, without
 assuming they are the same event. These counts do not prove compliance, honest selection or
 a success rate. Only the five-field rows are published; private observation notes are excluded.
+
+The separate [public contribution audit](CONTRIBUTIONS.md) ([evidence](evidence/2026-09-16-contributions.json))
+covers `is:public author:yazzang-homelab`: **69 PRs + 25 issues = 94 authored objects**, not
+the 38-quest local snapshot. Search totals match fetched counts, duplicates are zero, and
+an independent REST issue-list check across 8 repositories matches all 94 keys.
+Upstream `Yeachan-Heo/gajae-code` accounts for **49 PRs: 38 actually merged, 11 closed/unmerged**,
+plus 23 closed issues. The 69 public PRs include 17 in the author's own repositories;
+the overall 43 merges are not an upstream result. Only 21 authored objects (14 PRs, 7 issues)
+directly match the ledger; successor PR #5154 was authored by someone else. Private PRs
+(14) are excluded. Contribution outcomes do not establish that this skill caused them.
 
 ## License
 

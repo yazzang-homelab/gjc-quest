@@ -81,7 +81,7 @@ gh attestation verify /tmp/gjc-quest.SKILL.md --repo yazzang-homelab/gjc-quest
 CI는 `SHA256SUMS`가 `SKILL.md`와 어긋나는 커밋을 거부한다
 ([`skill.yml`](.github/workflows/skill.yml)) — 낡은 체크섬은 없는 것보다 나쁘다. 검증을
 건너뛰는 습관을 가르치기 때문이다. **PGP 서명은 없다.** 제공되는 출처 증명은 attestation과
-커밋 히스토리이고, 830줄 한국어 산문은 사람이 읽을 수 있는 diff다.
+커밋 히스토리이고, 스킬 본문은 사람이 읽을 수 있는 diff다.
 
 `config.yml`의 `skills.enabled`와 `skills.enablePiUser`가 참이어야 로드된다. **설정을 켠
 직후 세션에는 반영되지 않는다** — 새 세션에서 호출한다. 스킬은 설정을 바꾸지 않는다.
@@ -119,6 +119,16 @@ accepted 0건**이다. **locator 22건(PR 15, issue 7)**, **현재 locator 없�
 `di-ask-freetext-missing`은 없고 `di-other-empty-input-reask`가 있다. 같은 사건이라고
 추정하지 않는다. 이 수치는 절차 준수·표본 선택의 정직성·성공률을 증명하지 않는다.
 다섯 필드 행만 공개하며 비공개 관측 노트는 포함하지 않는다.
+
+별도 [공개 기여 전수감사](CONTRIBUTIONS.md)([증거](evidence/2026-09-16-contributions.json))는
+`is:public author:yazzang-homelab`의 **PR 69건 + issue 25건 = 작성 객체 94건**으로,
+로컬 38퀘스트 스냅샷과 모집단이 다르다. 검색 total과 수집 count가 일치하고 중복은 0건이며,
+8개 저장소 REST issue list 독립 대조에서도 94개 키가 일치했다.
+upstream `Yeachan-Heo/gajae-code`은 **PR 49건 중 실제 merge 38건, closed/unmerged 11건**과
+closed issue 23건이다. 공개 PR 69건에는 자기 저장소 PR 17건이 포함되므로 전체 merge 43건을
+upstream 실적으로 쓰지 않는다. 원장과 직접 대응하는 작성 객체는 21건(PR 14, issue 7)이며,
+승계 PR #5154는 타인 작성이다. 비공개 PR 14건은 제외했다. 기여 결과는 이 스킬이 그 결과를
+유발했다는 인과 증거가 아니다.
 
 ## License
 

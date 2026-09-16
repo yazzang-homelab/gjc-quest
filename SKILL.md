@@ -18,6 +18,41 @@ description: >
 성과 지표가 아니다. 이 문서는 절차이지 실행 권한이 아니다 — 원격을 바꾸는 동작은 전부
 사람이 한다.
 
+## 실제 기여 전수 감사
+
+2026-09-16 (+09:00) 공개 작성자 `yazzang-homelab` 전수 감사는 **94건(PR 69, issue 25)**을
+관측했다. 스킬 대상 upstream `Yeachan-Heo/gajae-code` PR 49건 중 **38건이 실제 merged**,
+11건은 closed/unmerged이며 이슈 23건은 closed다. 자기 저장소 PR 17건과 다른 외부 PR
+3건은 별도로 집계한다. 이는 작성자의 공개 기여 기록이지 모두 이 스킬로 만든 실적은 아니다.
+
+구체적 채택은 #5440의 이미지 요청·결과 `model.id` 보존, #5197의 selector catalog/auth
+refresh당 1회 resolve 및 `credentialSessionId` 보존, #3527의 OAuth refresh 실패 루프
+수정이다. 앞 두 건은 merge·`dev` 포함 관계·테스트 파일 단언 존재를, 마지막은 merge·
+`dev` 포함 관계·수정 commit을 확인했다. 이번 감사에서 해당 테스트를 실행하거나 장애를
+재현한 것은 아니다.
+
+관측된 장단점도 남긴다. upstream 직접 merge 38건과 별도 코드 승계 4건
+(#3521·#4309·#4956·#5152)을 구별하며 재제출·부분 후속을 중복 합산하지 않는다.
+#3514는 제품 계약 부재, #4466은 identity/lifecycle cap 문제로 원안이 폐기되었다.
+#5290에서는 같은 Astra 요구라도 generator ownership과 가격 경계 test 증거가 더 강한
+다른 안 #5294가 선택되었다. 반영된 수정뿐 아니라 계약·경계 검증의 부족도 실제 결과다.
+이는 관측된 교훈이며 기존 게이트를 강화하거나 새로운 평가·전이 규칙을 만드는 것이 아니다.
+이슈 25건은 해결 관계·반영 확인 17, 부분 해결 3, 해결 미확인 4, 작성자 철회 1건으로
+나뉜다. 공개 수정 관계와 실제 반영을 확인한 것이지 제품 동작 재현을 완료한 것은 아니다.
+
+- [전수 보고서·94건 링크·판독 및 재현 명령](https://github.com/yazzang-homelab/gjc-quest/blob/main/CONTRIBUTIONS.md),
+  [공개 metadata·hash·timeline 증거](https://github.com/yazzang-homelab/gjc-quest/blob/main/evidence/2026-09-16-contributions.json),
+  [독립 대조·채택 검증 receipt](https://github.com/yazzang-homelab/gjc-quest/blob/main/evidence/2026-09-16-verification.json),
+  [현행 로컬 원장 38행](https://github.com/yazzang-homelab/gjc-quest/blob/main/LEDGER.md)에 근거를 남겼다. 공개 작성 객체와 quest 원장은 분모가 다르다.
+- **merge, 코드 승계, 이슈 해결, 스킬 귀속을 분리**한다. 단순 closed는 해결을 증명하지
+  않으며, 후속 PR의 merge는 원 PR의 merge가 아니다. 원장 locator 직접 일치는 21건이고
+  타인 작성 후속 #5154는 작성자 분모에 추가하지 않는다. 원장 밖 기여를 자동 귀속하지 않는다.
+- PR merge 비율은 기여 객체 처분 비율일 뿐 스킬의 인과적 성공률이 아니다. 공개본 첫 git
+  commit `2026-08-26T14:52:28+09:00`은 최초 사용일 증거가 아니므로 전후 인과율을 비교하지 않는다.
+- 읽기 전용 수집기는 이번 요청의 증거 수집용이지 절차 검사기나 폴링이 아니다. 새 자동화,
+  자동 제출, 게이트 면제 또는 전이 변경을 약속하지 않는다. 설치본은 이번 확인에서 없었으며
+  새로 설치하지 않았다. 기여의 재미와 성취가 목적이고 PR 건수 목표는 여전히 없다.
+
 ## Activation preflight
 
 - 진입점: `/skill:gjc-quest`. 설치 위치는 `~/.gjc/agent/skills/gjc-quest/SKILL.md`.
