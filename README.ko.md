@@ -91,7 +91,8 @@ CI는 `SHA256SUMS`가 `SKILL.md`와 어긋나는 커밋을 거부한다
 
 ## 로컬 상태
 
-원장과 관측 노트는 `~/.gjc/agent/state/gjc-quest-ledger.md` 한 파일에 붙는다.
+원장과 관측 노트의 기본 경로는 `~/.gjc/agent/state/gjc-quest-ledger.md`다.
+이 설치의 공개본은 대신 `~/.gjc/agent/state/gajae-code-pr-status.md`의 gjc-quest 원장 섹션을 사용한다.
 새 JSONL을 만들지 않는다. 손상·중복 섹션을 발견하면 고쳐 쓰지 않고 보류한다.
 
 **관측 노트는 로컬 전용이다.** 관측(직접 사건)과 추단(해석)을 물리적으로 분리해 적고,
@@ -109,9 +110,15 @@ CI는 `SHA256SUMS`가 `SKILL.md`와 어긋나는 커밋을 거부한다
 ## 이 규율을 실제로 지키는가
 
 타당한 의문이다 — 절차가 촘촘하다는 것이 매번 지켰다는 증명은 아니고, 문서로는 증명할 수
-없다. [**`LEDGER.md`**](LEDGER.md)가 이 스킬이 실제로 써 온 원장이다. 25건 전부, 로케이터는
-export 시점에 읽기 전용 `gh`로 하나씩 재파생했다 — **착륙 5건, 원격 객체를 아예 만들지 않은
-것 15건.** 거절과 로컬 보류 쪽이 읽을 값이 있는 부분이다.
+없다. [**`LEDGER.md`**](LEDGER.md)는 **2026-09-16 (+09:00) 현재 38건의 스냅샷**이며
+누적 불변 기록이 아니다. 읽기 전용 `gh` 확인 기준 **착륙 14건**(PR merge 13건과 #4956의
+검증된 commit 승계 예외 1건), **closed 8건, 로컬 보류 open 12건, rejected 4건,
+accepted 0건**이다. **locator 22건(PR 15, issue 7)**, **현재 locator 없는 행 16건**이다.
+#5290은 후속 #5294의 merge와 별개로 closed/unmerged를 유지한다. locator 없는 보류는
+이번에 재현 재검증하지 않았다. 과거 공개본은 25건이었으며 당시 rejected인
+`di-ask-freetext-missing`은 없고 `di-other-empty-input-reask`가 있다. 같은 사건이라고
+추정하지 않는다. 이 수치는 절차 준수·표본 선택의 정직성·성공률을 증명하지 않는다.
+다섯 필드 행만 공개하며 비공개 관측 노트는 포함하지 않는다.
 
 ## License
 

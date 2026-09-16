@@ -218,20 +218,20 @@ gh attestation verify /tmp/gjc-quest.SKILL.md --repo yazzang-homelab/gjc-quest
     <div class="sec-head">
       <div>
         <h2>Does anyone actually follow this?</h2>
-        <p>A dense procedure proves nothing about whether the line is held every time. So the ledger is published as-is.</p>
+        <p>A dense procedure proves nothing about whether the line is held every time. So a five-field snapshot of the current local ledger is published.</p>
       </div>
-      <a href="https://github.com/yazzang-homelab/gjc-quest/blob/main/LEDGER.md">All 25 rows →</a>
+      <a href="https://github.com/yazzang-homelab/gjc-quest/blob/main/LEDGER.md">All 38 rows →</a>
     </div>
     <div class="stats" style="max-width:100%">
-      <div><div class="stat-k">quests recorded</div><div class="stat-v tabular">25</div></div>
-      <div><div class="stat-k">landed upstream</div><div class="stat-v tabular">5</div></div>
-      <div><div class="stat-k">never sent anywhere</div><div class="stat-v tabular">15</div></div>
+      <div><div class="stat-k">quests recorded</div><div class="stat-v tabular">38</div></div>
+      <div><div class="stat-k">merged, including succession</div><div class="stat-v tabular">14</div></div>
+      <div><div class="stat-k">rows without a current locator</div><div class="stat-v tabular">16</div></div>
     </div>
     <ul class="notes">
-      <li><b>15 of 25 never produced a remote object.</b> That is the number worth reading — rejected by the exclusion view, unreproducible on a clean HOME, or blocked behind a product decision. It is the evidence that the gates are not decoration.</li>
-      <li>The state of all 10 locators was re-derived from read-only <span class="mono">gh</span> at export time. That is the "no second authority in markdown" rule made visible.</li>
+      <li><b>16 of 38 rows have no current locator.</b> These are 12 open local holds and 4 rejected rows. The rest are 14 merged and 8 closed; accepted is 0.</li>
+      <li>The 22 locators comprise 15 PRs and 7 issues. 13 PRs are merged, #5290 and #4956 are closed/unmerged, and all issues are closed. #4956 retains its existing merged classification because successor commit <span class="mono">a9ed03ba2073fda4ed8b0d9c556a104e45df3476</span> is included in <span class="mono">dev</span>.</li>
       <li><b>The observation notes, Decision blocks and eleven-slot reports are not published.</b> They interpret a specific maintainer's behaviour, and publishing that would be a dossier rather than evidence.</li>
-      <li>Everything except locator state is self-reported. Nothing here proves a hold was honest — only that the ratio is not flattering-by-construction.</li>
+      <li>This is a current local snapshot, not an immutable cumulative record. Everything except locator state and succession evidence is self-reported; local holds were not reproduction-tested again in this refresh. No current locator does not prove nothing was ever sent, and these counts alone establish neither gate effectiveness nor an unmanipulated ratio.</li>
     </ul>
   </div>
 </section>

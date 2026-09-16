@@ -2,34 +2,45 @@
 
 The procedure in [`SKILL.md`](SKILL.md) is dense: three ordered gates, a derived exclusion
 view, an eleven-slot report per card. A document cannot prove that a human actually holds that
-line every time. So here is the live ledger this skill has been writing against
-`Yeachan-Heo/gajae-code`, exported as-is.
+line every time. This is a current local snapshot, with locator states refreshed from remote
+checks, not an immutable cumulative history. Most locators target `Yeachan-Heo/gajae-code`;
+one targets `devswha/gajae-code-app`.
 
 - **Schema.** Exactly five fields: `quest_id · source · state · pr · closure_cause`. No sixth
-  column, no pseudo-states. This is the same table the skill appends to
-  `~/.gjc/agent/state/gjc-quest-ledger.md`.
+  column, no pseudo-states. The source is the gjc-quest ledger section of
+  `~/.gjc/agent/state/gajae-code-pr-status.md`; only its 38 five-field rows are exported.
 - **Authority.** The markdown holds local decisions and namespaced route/defer/revival
   provenance only. `state` and terminal causes for anything with a locator are **derived from
   read-only `gh`** (`QTR-08`), never stored as a second authority. The `state` column below was
   re-derived at export time; every locator was checked individually.
-- **Exported.** 2026-08-26T08:00Z. Reproduce any row:
+- **Exported.** 2026-09-16 (+09:00). Query the locator's repository and object type:
 
   ```sh
-  gh api repos/Yeachan-Heo/gajae-code/issues/<number> \
-    --jq '"\(if .pull_request then "PR" else "ISSUE" end) \(.state) \(.pull_request.merged_at // "-")"'
+  gh api repos/<owner>/<repo>/pulls/<number> --jq '{state, merged, merged_at}'
+  gh api repos/<owner>/<repo>/issues/<number> --jq '{state, state_reason}'
   ```
+
+The earlier export had 25 rows. Its rejected `GQ-20260826-di-ask-freetext-missing` row is
+absent from the current source; `GQ-20260826-di-other-empty-input-reask` is present instead.
+This does not establish that the two IDs represent the same event. Author PRs absent from
+the local ledger are not added as quests.
 
 ## Rows
 
 | quest_id | source | state | pr | closure_cause |
 |---|---|---|---|---|
-| `GQ-20260826-di-nested-phase-write-silent` | `static-defect` | `accepted` | `—` | `pending:new` |
-| `GQ-20260826-di-ask-freetext-missing` | `static-defect` | `rejected` | `—` | `exclusion:not-a-defect-measured` |
+| `GQ-20260909-image-role-selected-model` | `session-misbehavior` | `merged` | `pr:Yeachan-Heo/gajae-code#5440` | `pending:pr-proposal;pending:head:371c7cd153782b77dced5f158c651c9b4f609f2d` |
+| `GQ-20260907-gateway-compound-tool-id` | `session-misbehavior` | `merged` | `pr:Yeachan-Heo/gajae-code#5389` | `pending:pr-proposal;pending:head:84f4f85e0` |
+| `GQ-20260905-codex-astra-catalog` | `static-defect` | `closed` | `pr:Yeachan-Heo/gajae-code#5290` | `product_direction;pending:pr-proposal;pending:succession:5294` |
+| `GQ-20260904-preset-cursor-rerender-freeze` | `session-misbehavior` | `merged` | `pr:Yeachan-Heo/gajae-code#5265` | `pending:pr-proposal` |
+| `GQ-20260902-preset-auth-sync-freeze` | `session-misbehavior` | `merged` | `pr:Yeachan-Heo/gajae-code#5197` | `pending:pr-proposal` |
+| `GQ-20260826-di-nested-phase-write-silent` | `static-defect` | `merged` | `pr:Yeachan-Heo/gajae-code#4985` | `pending:pr-proposal` |
+| `GQ-20260826-di-other-empty-input-reask` | `static-defect` | `open` | `—` | `hold:mechanism-unidentified;pending:revival:OBS-062` |
 | `GQ-20260826-di-resume-empty-state` | `session-misbehavior` | `open` | `—` | `hold:local-state-only` |
 | `GQ-20260826-di-cancel-verb-absent` | `static-defect` | `open` | `—` | `hold:product-decision-required` |
 | `GQ-20260826-multiplexer-hyperlink-force-off` | `static-defect` | `rejected` | `—` | `exclusion:not-a-defect-measured` |
 | `GQ-20260825-login-url-unlinked-wrap` | `static-defect` | `merged` | `pr:Yeachan-Heo/gajae-code#4956` | `pending:pr-proposal;pending:succession:a9ed03ba20` |
-| `GQ-20260825-login-url-copy-integrity` | `static-defect` | `open` | `issue:Yeachan-Heo/gajae-code#4977` | `pending:scope-out-proposal:GQ-20260825-login-url-unlinked-wrap` |
+| `GQ-20260825-login-url-copy-integrity` | `static-defect` | `closed` | `issue:Yeachan-Heo/gajae-code#4977` | `pending:scope-out-proposal:GQ-20260825-login-url-unlinked-wrap` |
 | `GQ-20260823-idle-session-identity` | `static-defect` | `closed` | `issue:Yeachan-Heo/gajae-code#4855` | `pending:pr-proposal` |
 | `GQ-20260823-account-env-token-freeze` | `session-misbehavior` | `open` | `—` | `hold:local-state-only` |
 | `GQ-20260818-managed-lock-leak` | `static-defect` | `open` | `—` | `hold:independent-review-blocked;hold:local-worktree-missing` |
@@ -48,74 +59,106 @@ line every time. So here is the live ledger this skill has been writing against
 | `GQ-20260813-clear-context-transition` | `session-misbehavior` | `open` | `—` | `hold:not-reproducible-on-current-version` |
 | `GQ-20260824-usage-limit-auto-resume` | `static-defect` | `closed` | `issue:Yeachan-Heo/gajae-code#4908` | `pending:pr-proposal` |
 | `GQ-20260824-wsl-drvfs-busy-lock` | `session-misbehavior` | `rejected` | `—` | `exclusion:already-landed-upstream` |
+| `GQ-20260828-self-pane-turn-forgery` | `session-misbehavior` | `closed` | `issue:Yeachan-Heo/gajae-code#5039` | `pending:pr-proposal` |
+| `GQ-20260828-local-legacy-path-resolution` | `session-misbehavior` | `open` | `—` | `hold:dev-reproduction-unverified` |
+| `GQ-20260831-thinking-block-duplication` | `static-defect` | `rejected` | `—` | `exclusion:taste-refactor` |
+| `GQ-20260824-escaped-nonascii-observability` | `static-defect` | `merged` | `pr:Yeachan-Heo/gajae-code#4923` | `pending:pr-proposal` |
+| `GQ-20260824-ox-alpha-empty-stream` | `static-defect` | `merged` | `pr:Yeachan-Heo/gajae-code#4906` | `pending:pr-proposal` |
+| `GQ-20260831-pi-native-custom-provider-transport` | `static-defect` | `merged` | `pr:Yeachan-Heo/gajae-code#5101` | `pending:pr-proposal` |
+| `GQ-20260901-app-image-native-vision` | `static-defect` | `closed` | `issue:devswha/gajae-code-app#13` | `pending:pr-proposal` |
+| `GQ-20260901-esc-steer-loader-precedence` | `static-defect` | `merged` | `pr:Yeachan-Heo/gajae-code#5154` | `pending:pr-proposal;pending:succession:Yeachan-Heo/gajae-code#5154` |
 
 ## What the numbers say
 
 | | count |
 |---|---|
-| quests recorded | 25 |
-| **landed upstream** (`merged`) | **5** |
-| closed at the remote (`closed`) | 4 |
-| open — 1 awaiting review at the remote, 10 held locally | 11 |
-| rejected before ever leaving the machine (`rejected`) | 4 |
-| in the single implementation slot (`accepted`) | 1 |
-| remote objects created, total | 10 (5 PRs, 5 issues) |
+| quests in the current snapshot | 38 |
+| **landed upstream** (`merged`) — 13 merged PRs + 1 succession exception | **14** |
+| closed (`closed`) — 1 unmerged PR + 7 completed issues | 8 |
+| open — all held locally, none open at the remote | 12 |
+| rejected locally (`rejected`) | 4 |
+| in the single implementation slot (`accepted`) | 0 |
+| rows with a remote locator | 22 (15 PRs, 7 issues) |
+| rows without a locator in this snapshot | 16 |
 
-**15 of 25 never produced a remote object.** That is the part worth reading. Four were rejected
-by the exclusion view or by measurement showing there was no defect
-(`exclusion:not-a-defect-measured`, `exclusion:already-landed-upstream`), and ten sit on local
-holds — `hold:local-state-only` when a clean HOME would not reproduce it,
-`hold:dev-reproduction-unverified` when the path could not be confirmed on current `dev`,
-`hold:product-decision-required` when the fix would have invented product semantics,
-`hold:slot-occupied` when the one slot was taken.
+**16 of 38 rows have no locator in the current snapshot:** 12 local holds and 4 rejections.
+This is not evidence that no remote object ever existed. Locator-free rows and their recorded
+hold reasons are unchanged; this export did not re-test reproduction or revalidate those holds.
 
 ### Landed
 
 | quest | locator | how it landed |
 |---|---|---|
-| `GQ-20260813-crash-index-self-quarantine` | [#4470](https://github.com/Yeachan-Heo/gajae-code/pull/4470) | merged 2026-08-13 |
-| `GQ-20260820-rotating-agent-env-credential` | [#4737](https://github.com/Yeachan-Heo/gajae-code/pull/4737) | merged 2026-08-19 |
-| `GQ-20260819-anthropic-overload-retry` | [#4736](https://github.com/Yeachan-Heo/gajae-code/pull/4736) | merged 2026-08-20 |
-| `GQ-20260819-broker-publication-obstruction` | [#4732](https://github.com/Yeachan-Heo/gajae-code/pull/4732) | merged 2026-08-20 |
-| `GQ-20260825-login-url-unlinked-wrap` | [#4956](https://github.com/Yeachan-Heo/gajae-code/pull/4956) | PR closed unmerged; the commit landed on `dev` as `a9ed03ba20` with authorship credit — `QTR-12` succession |
+| `GQ-20260909-image-role-selected-model` | [#5440](https://github.com/Yeachan-Heo/gajae-code/pull/5440) | merged |
+| `GQ-20260907-gateway-compound-tool-id` | [#5389](https://github.com/Yeachan-Heo/gajae-code/pull/5389) | merged |
+| `GQ-20260904-preset-cursor-rerender-freeze` | [#5265](https://github.com/Yeachan-Heo/gajae-code/pull/5265) | merged |
+| `GQ-20260902-preset-auth-sync-freeze` | [#5197](https://github.com/Yeachan-Heo/gajae-code/pull/5197) | merged |
+| `GQ-20260826-di-nested-phase-write-silent` | [#4985](https://github.com/Yeachan-Heo/gajae-code/pull/4985) | merged |
+| `GQ-20260825-login-url-unlinked-wrap` | [#4956](https://github.com/Yeachan-Heo/gajae-code/pull/4956) | PR closed unmerged; verified commit succession on `dev` — `QTR-12` exception |
+| `GQ-20260819-anthropic-overload-retry` | [#4736](https://github.com/Yeachan-Heo/gajae-code/pull/4736) | merged |
+| `GQ-20260819-broker-publication-obstruction` | [#4732](https://github.com/Yeachan-Heo/gajae-code/pull/4732) | merged |
+| `GQ-20260820-rotating-agent-env-credential` | [#4737](https://github.com/Yeachan-Heo/gajae-code/pull/4737) | merged |
+| `GQ-20260813-crash-index-self-quarantine` | [#4470](https://github.com/Yeachan-Heo/gajae-code/pull/4470) | merged |
+| `GQ-20260824-escaped-nonascii-observability` | [#4923](https://github.com/Yeachan-Heo/gajae-code/pull/4923) | merged |
+| `GQ-20260824-ox-alpha-empty-stream` | [#4906](https://github.com/Yeachan-Heo/gajae-code/pull/4906) | merged |
+| `GQ-20260831-pi-native-custom-provider-transport` | [#5101](https://github.com/Yeachan-Heo/gajae-code/pull/5101) | merged |
+| `GQ-20260901-esc-steer-loader-precedence` | [#5154](https://github.com/Yeachan-Heo/gajae-code/pull/5154) | merged |
 
-Two issues were closed the same way: [#4478](https://github.com/Yeachan-Heo/gajae-code/issues/4478)
-and [#4481](https://github.com/Yeachan-Heo/gajae-code/issues/4481) were completed by the
-maintainer's own [#4495](https://github.com/Yeachan-Heo/gajae-code/pull/4495) and
-[#4509](https://github.com/Yeachan-Heo/gajae-code/pull/4509). The skill records that as
-`pending:succession:<ref>` and **does not contest credit** — a landed fix is the outcome that
-was wanted.
+Merge dates are omitted. #4956 remains `merged` only as the existing verified succession
+exception, not as a claim that the PR merged. The full successor commit is
+`a9ed03ba2073fda4ed8b0d9c556a104e45df3476`; the read-only comparison below returned
+`behind_by=0`, confirming the commit is included in `dev`:
+
+```sh
+gh api repos/Yeachan-Heo/gajae-code/compare/a9ed03ba2073fda4ed8b0d9c556a104e45df3476...dev --jq .behind_by
+```
+
+#5290 is closed **unmerged**, with `product_direction` retained. Its recorded successor
+#5294 being merged does not mean #5290 merged, and does not promote this row to `merged`.
+All seven issue locators are closed/completed. Their recorded provenance, including the
+succession references on #4478 and #4481, is retained without adding quests for successor PRs.
 
 ### What this export does not contain
 
-The observation notes, the Decision blocks and the eleven-slot card reports stay local by
-design. They contain interpretation of a specific maintainer's behaviour, and publishing that
-would be a dossier, not evidence. What is publishable is what can be checked independently: the
-five fields and the locators.
+Only the five-field ledger rows are exported. Observation notes, Decision blocks and
+eleven-slot card reports were not read for this refresh and are not published. References
+inside the permitted rows are preserved without retrieving their private targets.
 
 ### Honest limits
 
 The `state` column for locators is independently verifiable through `gh`; the rest —
 `quest_id`, `source`, `closure_cause`, and every row without a locator — is **self-reported**.
-Nothing in this repository can prove a hold was honest rather than convenient. What it can show
-is that the ratio is not flattering-by-construction: five landed against fifteen that were
-never sent.
+The #4956 succession exception additionally relies on the previously verified succession and
+the current commit comparison, not PR merge state alone. These counts prove neither process
+compliance nor the honesty of holds or selection. They describe only the current snapshot,
+not cumulative activity, a success rate, or fresh reproduction results.
 
 ---
 
 ## 한국어
 
 절차가 촘촘한 것과 그 규율을 매번 지켰다는 것은 다른 문제고, 문서로는 후자를 증명할 수 없다.
-그래서 이 스킬이 `Yeachan-Heo/gajae-code`를 상대로 실제로 써 온 원장을 그대로 공개한다.
+이 공개본은 **2026-09-16 (+09:00) 현재 스냅샷**이며 누적 불변 기록이 아니다.
 
-- 열은 정확히 다섯 개이고, locator가 있는 행의 `state`와 종단 사유는 **읽기 전용 `gh`로
-  파생**한다(`QTR-08`). 위 표의 `state`는 export 시점에 로케이터를 하나씩 조회해 다시 파생한
-  값이다 — 마크다운에 두 번째 권위 상태를 두지 않는다는 규칙이 그래서 실물로 보인다.
-- **25건 중 15건은 원격 객체를 만들지 않았다.** 4건은 배제 뷰 또는 "재보니 결함이 아님"으로
-  거절, 10건은 로컬 보류(깨끗한 HOME에서 미재현·현행 dev 확인 불가·제품 결정 선행 필요·
-  슬롯 점유), 1건이 구현 슬롯에 있다. 착륙 5건, 원격 종단 4건.
-- 관측 노트·Decision block·11슬롯 보고는 공개하지 않는다. 특정 관리자의 행동에 대한 해석이
-  들어 있어 그것을 공개하면 증거가 아니라 신상 문서가 된다. 독립 검증이 가능한 다섯 필드와
-  로케이터만 낸다.
-- locator 행의 상태 외에는 전부 **자기 보고**다. 보류가 정직했는지는 이 저장소가 증명하지
-  못한다. 증명되는 것은 비율이 자기 유리하게 조작되지 않았다는 것뿐이다 — 착륙 5 대 미발송 15.
+- 실제 소스는 `~/.gjc/agent/state/gajae-code-pr-status.md`의 gjc-quest 원장 섹션이다.
+  다섯 필드 38행만 공개하고, locator 상태는 읽기 전용 `gh`로 각각 확인했다.
+  대부분 `Yeachan-Heo/gajae-code`이며 `devswha/gajae-code-app` 이슈가 1건 있다.
+- **38건: `merged` 14, `closed` 8, `open` 12, `rejected` 4, `accepted` 0.**
+  착륙 14건은 PR merge 13건과 #4956 승계 예외 1건이다. `closed`는 미머지 PR #5290
+  1건과 closed/completed 이슈 7건이다. 원격에 열린 locator는 없다.
+- locator는 **22건(PR 15, issue 7)**이고 **16건은 현재 스냅샷에 locator가 없다**
+  (로컬 보류 12, 거절 4). 과거에도 원격 객체가 없었다는 뜻은 아니다. locator 없는 행과
+  보류 사유는 그대로 두었으며 이번에 재현하거나 보류 타당성을 재검증하지 않았다.
+- #4956 PR은 closed/unmerged다. 기존에 검증한 승계 commit
+  `a9ed03ba2073fda4ed8b0d9c556a104e45df3476`과 `dev`의 위 비교에서 `behind_by=0`을
+  확인해 기존 `merged` 예외를 유지했다. PR 자체가 merge됐다는 뜻은 아니다.
+  #5290은 `product_direction`을 유지한 `closed`이며, 후속 #5294의 merge가 #5290의
+  merge를 뜻하지 않는다. Landed 표는 날짜를 생략했다.
+- 과거 공개본은 25건이었다. 당시 rejected인 `GQ-20260826-di-ask-freetext-missing`은
+  현행 원장에 없고 `GQ-20260826-di-other-empty-input-reask`가 있다. 두 ID가 같은
+  사건이라고 추정하지 않는다. 로컬 원장에 없는 작성자 PR이나 후속 PR을 quest로 추가하지 않았다.
+- 허용된 행의 참조는 보존하되 비공개 참조 대상을 조회하지 않았다. 관측 노트·Decision block·
+  11슬롯 보고는 이번 갱신에서 읽지 않았고 공개하지 않는다.
+- locator의 원격 상태 외 필드와 locator 없는 행은 **자기 보고**다. #4956은 PR 상태만이
+  아니라 기존 승계 검증과 현재 commit 비교에 근거한다. 이 집계는 절차 준수·보류의 정직성·
+  표본 선택의 공정성을 증명하지 않으며 누적 활동·성공률·새 재현 결과도 아니다.

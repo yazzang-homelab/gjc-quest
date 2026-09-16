@@ -98,7 +98,9 @@ Invoke with `/skill:gjc-quest`. Aliases: `gjc quest`, `quest scan`, `scan gjc de
 ## Local state
 
 The ledger and the observation notes attach to a single file,
-`~/.gjc/agent/state/gjc-quest-ledger.md`. No new JSONL is created. Damaged or duplicated
+`~/.gjc/agent/state/gjc-quest-ledger.md` by default. This installation's export instead uses
+the gjc-quest ledger section of `~/.gjc/agent/state/gajae-code-pr-status.md`.
+No new JSONL is created. Damaged or duplicated
 sections are held, never rewritten in place.
 
 **The observation notes are local-only.** Observations (direct events) and inferences
@@ -117,10 +119,15 @@ Unofficial third-party skill, not affiliated with upstream.
 ## Does anyone actually follow this?
 
 Fair question — a dense procedure document proves nothing about whether a human holds the line
-every time. [**`LEDGER.md`**](LEDGER.md) is the real ledger this skill has been writing, 25
-quests, with every locator re-derived from read-only `gh` at export time: **5 landed upstream,
-15 never produced a remote object at all.** The rejections and local holds are the part worth
-reading.
+every time. [**`LEDGER.md`**](LEDGER.md) is a **2026-09-16 (+09:00) snapshot of 38 quests**,
+not an immutable cumulative history. Read-only `gh` checks give **14 landed rows** (13 merged
+PRs plus the verified #4956 commit-succession exception), **8 closed, 12 locally held open,
+4 rejected and 0 accepted**. There are **22 locators (15 PRs, 7 issues)** and **16 rows without
+a locator in this snapshot**. #5290 remains closed/unmerged despite successor #5294 merging.
+Locator-free holds were not reproduction-tested again. The older export had 25 rows; its
+rejected `di-ask-freetext-missing` is absent and `di-other-empty-input-reask` is present, without
+assuming they are the same event. These counts do not prove compliance, honest selection or
+a success rate. Only the five-field rows are published; private observation notes are excluded.
 
 ## License
 

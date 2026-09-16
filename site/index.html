@@ -217,20 +217,20 @@ gh attestation verify /tmp/gjc-quest.SKILL.md --repo yazzang-homelab/gjc-quest
     <div class="sec-head">
       <div>
         <h2>이 규율을 실제로 지키는가</h2>
-        <p>절차가 촘촘하다는 것과 매번 지켰다는 것은 다른 문제다. 그래서 원장을 그대로 공개한다.</p>
+        <p>절차가 촘촘하다는 것과 매번 지켰다는 것은 다른 문제다. 그래서 현행 로컬 원장의 5열 스냅샷을 공개한다.</p>
       </div>
-      <a href="https://github.com/yazzang-homelab/gjc-quest/blob/main/LEDGER.md">원장 25행 보기 →</a>
+      <a href="https://github.com/yazzang-homelab/gjc-quest/blob/main/LEDGER.md">원장 38행 보기 →</a>
     </div>
     <div class="stats" style="max-width:100%">
-      <div><div class="stat-k">기록된 퀘스트</div><div class="stat-v tabular">25<span class="unit">건</span></div></div>
-      <div><div class="stat-k">upstream 착륙</div><div class="stat-v tabular">5<span class="unit">건</span></div></div>
-      <div><div class="stat-k">원격에 안 나간 것</div><div class="stat-v tabular">15<span class="unit">건</span></div></div>
+      <div><div class="stat-k">기록된 퀘스트</div><div class="stat-v tabular">38<span class="unit">건</span></div></div>
+      <div><div class="stat-k">merged 분류 · 승계 포함</div><div class="stat-v tabular">14<span class="unit">건</span></div></div>
+      <div><div class="stat-k">현행 locator 없는 행</div><div class="stat-v tabular">16<span class="unit">건</span></div></div>
     </div>
     <ul class="notes">
-      <li><b>25건 중 15건은 원격 객체를 아예 만들지 않았다.</b> 읽을 값이 있는 쪽은 이 숫자다 — 배제·미재현·제품 결정 선행으로 걸러진 것들이고, 게이트가 장식이 아니라는 증거다.</li>
-      <li>locator가 붙은 10건의 상태는 export 시점에 읽기 전용 <span class="mono">gh</span>로 하나씩 재파생했다. 마크다운에 두 번째 권위 상태를 두지 않는다는 규칙이 실물로 보이는 부분이다.</li>
+      <li><b>38건 중 16건은 현행 locator가 없다.</b> 로컬 보류인 open 12건과 rejected 4건이다. 나머지는 merged 14건, closed 8건이며 accepted는 0건이다.</li>
+      <li>locator 22건은 PR 15건과 issue 7건이다. PR 13건은 merged, #5290과 #4956은 closed/unmerged이며 issue는 모두 closed다. #4956은 승계 commit <span class="mono">a9ed03ba2073fda4ed8b0d9c556a104e45df3476</span>의 <span class="mono">dev</span> 반영으로 기존 merged 분류를 유지한다.</li>
       <li><b>관측 노트·Decision block·11슬롯 보고는 공개하지 않는다.</b> 특정 관리자의 행동에 대한 해석이 들어 있어 공개하면 증거가 아니라 신상 문서가 된다.</li>
-      <li>locator 상태 이외는 자기 보고다. 보류가 정직했는지는 이 사이트가 증명하지 못한다 — 증명되는 것은 비율이 자기 유리하게 조작되지 않았다는 것뿐이다.</li>
+      <li>현행 로컬 스냅샷이지 누적 불변 기록이 아니다. locator 상태와 승계 근거 이외는 자기 보고이며, 로컬 보류를 이번에 재현 재검증하지 않았다. locator 없음은 과거 미발송의 증명이 아니며, 이 집계만으로 게이트의 효과나 비율의 비조작성을 입증할 수 없다.</li>
     </ul>
   </div>
 </section>
